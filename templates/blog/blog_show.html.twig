@@ -11,10 +11,24 @@
     {# cet objet 'article' ne sort pas de null part, c'est que le controller a tramsmit au template, c'est à dire les information d'un article selectionné en BDD en fonction de l'id transmit dans l'URL #}
     {# {{ dump(article) }} #}
 
+    {# Affichagedes message utilisateurs stockées en session (addFlash dans le controler) #}
+    {# app : objet twig qui contient toutes les informations de la session en cours #}
+    {% for message in app.flashes('success') %}
+        <div class="col-6 mx-auto text-center alert alert-success">
+            {{ message }}
+        </div>        
+    {% endfor %}
+
+        {% if article.photo != null %}
+            {% set col = 8 %}
+        {% else %}
+            {% set col = 12 %}
+        {% endif %}
+
 <div class="col-md-12">
     
     <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm position-relative">
-        <div class="col p-4 d-flex flex-column position-static">
+        <div class="col-{{ col }} p-4 d-flex flex-column position-static">
             <strong class="d-inline-block mb-2 text-primary">Illuminati</strong>
             <h3 class="mb-0">{{ article.titre}}</h3>
             <div class="mb-1 text-muted">Publié le {{ article.date|date('d/m/Y')}} à {{article.date|date('H:i:s')}}</div>
@@ -27,9 +41,12 @@
 
         </p>
         </div>
-        <div class="col-auto d-none my-auto mx-1 d-lg-block">
-        <img src="{{ article.photo|replace({'300/600': '250/250'}) }}" alt="">
+
+        {% if article.photo != null %} 
+        <div class="col-{{ col }} d-none d-lg-block">       
+        <img src="{{ asset('uploads/photos/' ~ article.photo) }}" alt="{{ article.titre }}" class="col-12 img-responsive">
         </div>
+        {% endif %}
 
     </div>
 </div>

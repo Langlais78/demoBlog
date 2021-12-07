@@ -1,5 +1,14 @@
 /* stylelint-disable selector-list-comma-newline-after */
 
+.img-modif{
+  width: 100px;
+  height: 200px;
+}
+
+.card-blog{
+  height: 350px;
+}
+
 .conteneur-front{
     min-height: 150vh !important;
 }
