@@ -1,0 +1,43 @@
+{% extends "base.html.twig" %}
+
+{% block title %}
+    BlogSymfony | Liste des articles
+{% endblock %}
+
+{% block body %}
+    <div class="row mb-2">
+
+    {# cet objet 'article' ne sort pas de null part, c'est ce que le controller a transmit au template, c'est à dire l'ensemble des articles sélectionner en BDD #}
+    {# {{ dump(articles) }} #}
+
+    {% for data in articles %}
+        {# 'data' ne sort pas de null part, c'est une variable de reception que nous definnissons dans la boucle FOR qui receptionne un article par tour de boucle FOR #}
+        {# {{ dump(data) }} #}
+
+        <div class="col-md-6">
+            <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm position-relative">
+                <div class="col p-4 d-flex flex-column position-static">
+                <strong class="d-inline-block mb-2 text-primary">Illuminati</strong>
+                <h3 class="mb-0">{{data.titre}}</h3>
+                {# Pour la date, ce que retourne la BDD est un objet issue de la class Datetime, donc on ne peut pas convertir un objet en une chaine de caractere, pour cela nous devons utiliser la fonction date() de twig #}
+                <div class="mb-1 text-muted">Publié le {{ data.date|date("d/m/Y") }} à {{data.date|date('H:i:s')}}</div>
+                {# slice(0, 100) : filtre twig qui retourne un partie de la chaine de caractere #}
+                {# striptags() : filtre twig qui supprime les balises html #}
+                <p class="card-text mb-auto">{{ data.contenu|slice(0, 100)|striptags }}[...]</p>
+                {# On fournit à la route l'id de l'article à transmettre dansl'URL #}
+                {# La route 'blog_show' est une route parametrée, on doit lui transmettre un id dans l'URL #}
+                <a href="{{ path('blog_show', {'id': data.id}) }}" class="stretched-link">Continue reading</a>
+                </div>
+                <div class="col-auto d-none d-lg-block">
+                
+                    {# replace(): fonction twig permettant de remplacer un element dans une chaine de caractere #}
+                    <img src="{{ data.photo|replace({'300/600': '200/250'}) }}" alt="">
+
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    
+{% endblock %}

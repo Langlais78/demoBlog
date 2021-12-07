@@ -1,0 +1,50 @@
+{% extends "base.html.twig" %}
+
+{% block title %}
+    Blog Symfony | nouvel article
+{% endblock %}
+
+{% block body %}
+
+    <h1 class="text-center my-5">Nouvel article</h1>
+
+    {# 1ere methode du formulaire #}
+    {# <form method="post">
+        <div class="col-6 mx-auto">
+            <div class="mb-3">
+                <label for="titre" class="form-label">Titre</label>
+                <input type="text" class="form-control" id="titre" name="titre">
+            </div>
+            <div class="mb-3">
+                <label for="contenu" class="form-label">Contenu</label>
+                <textarea type="text" class="form-control" rows='10' id="contenu" name="contenu"></textarea>
+            </div>
+            <div class="mb-3 ">            
+                <label for="photo" class="form-label" >Photo</label>
+                <input type="text" class="form-control" id="photo" name="photo">
+            </div>
+            <div class="text-center">
+            <button type="submit" class="btn btn-primary col-4">Envoyer !</button>
+            </div>
+        </div>
+    </form> #}
+
+    {# 2ème methode du formlaire #}
+    {# formArticle ne sort pas de null part, c'est le resultat du creatView(), c'est ce que le controller a transmit au template, il il contient tout les champs du formulaire #}
+    {# form_start(), form_end() : fonction twig permettant de mettre en form et d'afficher le form #}
+<div class="col-8 mx-auto">
+    {{ form_start(formArticle) }}
+
+        {{ form_row(formArticle.titre) }}
+
+        {{ form_row(formArticle.contenu) }}
+
+        {{ form_row(formArticle.photo) }}
+
+        <div class="text-center">
+            <button type="submit" class="btn btn-primary col-4">Envoyer !</button>
+        </div>
+    {{ form_end(formArticle) }}
+</div>
+    
+{% endblock %}
