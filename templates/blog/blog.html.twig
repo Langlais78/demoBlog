@@ -14,9 +14,16 @@
         {# 'data' ne sort pas de null part, c'est une variable de reception que nous definnissons dans la boucle FOR qui receptionne un article par tour de boucle FOR #}
         {# {{ dump(data) }} #}
 
+        {# Si il y a une photo en BDD, on definit un col-8 dans la div #}
+        {% if data.photo != null %}
+            {% set col = 8 %}{# set permet de déclarer des variable en  #}
+        {% else %}
+            {% set col = 12 %}
+        {% endif %}
+
         <div class="col-md-6">
-            <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm position-relative">
-                <div class="col p-4 d-flex flex-column position-static">
+            <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm position-relative card-blog">
+                <div class="col-{{ col }} p-4 d-flex flex-column position-static">
                 <strong class="d-inline-block mb-2 text-primary">Illuminati</strong>
                 <h3 class="mb-0">{{data.titre}}</h3>
                 {# Pour la date, ce que retourne la BDD est un objet issue de la class Datetime, donc on ne peut pas convertir un objet en une chaine de caractere, pour cela nous devons utiliser la fonction date() de twig #}
@@ -26,14 +33,21 @@
                 <p class="card-text mb-auto">{{ data.contenu|slice(0, 100)|striptags }}[...]</p>
                 {# On fournit à la route l'id de l'article à transmettre dansl'URL #}
                 {# La route 'blog_show' est une route parametrée, on doit lui transmettre un id dans l'URL #}
-                <a href="{{ path('blog_show', {'id': data.id}) }}" class="stretched-link">Continue reading</a>
+                <a href="{{ path('blog_show', {'id': data.id}) }}" class="stretched-link">Lire la suite</a>
                 </div>
-                <div class="col-auto d-none d-lg-block">
                 
+
+                {% if data.photo != null %} 
+
+                <div class="col-{{ col }} d-none d-lg-block">
+
                     {# replace(): fonction twig permettant de remplacer un element dans une chaine de caractere #}
-                    <img src="{{ data.photo|replace({'300/600': '200/250'}) }}" alt="">
+                    <img src="{{ asset('uploads/photos/' ~ data.photo) }}" alt="{{ data.titre }}" class=" img-responsive">
 
                 </div>
+
+                {% endif %}
+
             </div>
         </div>
         {% endfor %}
