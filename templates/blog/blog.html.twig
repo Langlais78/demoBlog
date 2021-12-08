@@ -39,7 +39,7 @@
 
                 {% if data.photo != null %} 
 
-                <div class="col-{{ col }} d-none d-lg-block">
+                <div class="col-4 d-none d-lg-block">
 
                     {# replace(): fonction twig permettant de remplacer un element dans une chaine de caractere #}
                     <img src="{{ asset('uploads/photos/' ~ data.photo) }}" alt="{{ data.titre }}" class=" img-responsive">
