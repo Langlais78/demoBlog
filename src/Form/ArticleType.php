@@ -3,8 +3,10 @@
 namespace App\Form;
 
 use App\Entity\Article;
+use App\Entity\Category;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -35,6 +37,13 @@ class ArticleType extends AbstractType
                         'message' => "Merci de saisir un autre titre"
                     ])
                 ]
+            ])
+            // On definit le champ permettant d'associer une catégorie à l'article dans le formulaire
+            // Ce champ provient d'une autre entité, en gros c'est la clé etrangère
+            ->add('category', EntityType::class, [
+                'label' => "Choisir une catégorie",
+                'class' => Category::class, // On précise de quelle entité vient ce champ
+                'choice_label' => 'titre'// on definit la valeur qui apparaitra dans la liste deroulante
             ])
             ->add('contenu', TextareaType::class, [
                 'label' => 'Contenu de l\'article :',

@@ -22,6 +22,14 @@
     {% %} --> commande (cmd ex: if/else | for/endfor)
     #}
 
+    {% for message in app.flashes('success') %}
+
+        <div class="col-6 mx-auto text-center p-3 bg-success text-white my-3">
+            {{ message }}
+        </div>
+        
+    {% endfor %}
+
     <h1 class="text-center my-5">{{ title }}</h1> 
 
     {# 25 #}

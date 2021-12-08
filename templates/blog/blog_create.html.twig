@@ -60,6 +60,8 @@
 
         {{ form_row(formArticle.photo) }}
 
+        {{ form_row(formArticle.category) }}
+
         {% if photoActuelle %}
 
         {# Si photoActuelle retourne TRUE, cela veut dire que l'article possède une photo, c'est une modification, alors on entre dans la condition IF et on affiche la photoactuelle de l'article #}

@@ -7,6 +7,8 @@
 {% block body %}
     <div class="row mb-2">
 
+    
+
     {# cet objet 'article' ne sort pas de null part, c'est ce que le controller a transmit au template, c'est à dire l'ensemble des articles sélectionner en BDD #}
     {# {{ dump(articles) }} #}
 
@@ -24,7 +26,7 @@
         <div class="col-md-6">
             <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm position-relative card-blog">
                 <div class="col-{{ col }} p-4 d-flex flex-column position-static">
-                <strong class="d-inline-block mb-2 text-primary">Illuminati</strong>
+                <strong class="d-inline-block mb-2 text-primary">{{ data.category.titre }}</strong>
                 <h3 class="mb-0">{{data.titre}}</h3>
                 {# Pour la date, ce que retourne la BDD est un objet issue de la class Datetime, donc on ne peut pas convertir un objet en une chaine de caractere, pour cela nous devons utiliser la fonction date() de twig #}
                 <div class="mb-1 text-muted">Publié le {{ data.date|date("d/m/Y") }} à {{data.date|date('H:i:s')}}</div>
@@ -39,10 +41,12 @@
 
                 {% if data.photo != null %} 
 
-                <div class="col-4 d-none d-lg-block">
+
+                <div class="col-4 d-none d-lg-block card-blog>
+
 
                     {# replace(): fonction twig permettant de remplacer un element dans une chaine de caractere #}
-                    <img src="{{ asset('uploads/photos/' ~ data.photo) }}" alt="{{ data.titre }}" class=" img-responsive">
+                    <img src="{{ asset('uploads/photos/' ~ data.photo) }}" alt="{{ data.titre }}" class=" img-responsive card-blog">
 
                 </div>
 
