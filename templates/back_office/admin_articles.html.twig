@@ -1,0 +1,48 @@
+{% extends "base_admin.html.twig" %}
+
+{% block title %}
+    BlogSymfony | Gestions des articles
+{% endblock %}
+
+{% block body %}
+
+    <h1 class="text-center my-2">Liste des articles</h1>
+
+    <table class="table table-striped mx-2">
+        <tr>
+            {% for data in colonnes %}
+
+                {% if data != 'id' %}
+
+                    <th class="text-center"> {{data|capitalize}} </th>
+
+                {% endif %}
+                
+            {% endfor %}
+            <th>Cat</th>
+            <th>No Comm.</th>
+            <th>Action</th>
+        </tr>
+        
+            {% for data in cellules %} 
+
+                {% if data != 'id' %}
+                <tr>
+        
+                <td> {{ data.titre }} </td>
+                <td> {{ data.contenu|slice(0, 100)|striptags }}[...] </td>
+                <td><img src="{{ asset('uploads/photos/' ~ data.photo) }}" alt="" style="width: 40%;"></td>
+                <td> {{ data.date|date("d/m/Y") }}{{data.date|date('H:i:s')}} </td>
+                <td> {{ data.category.titre }} </td>
+                <td> {{ data.comments|length}} </td>
+                <td class="mx-auto"><a href="" class="btn bg-success"><i class="bi bi-trash"></i></a><i class="bi bi-pencil-square"></i></td>
+
+                </tr>
+
+                {% endif %}  
+
+            {% endfor %}
+        
+    </table>
+    
+{% endblock %}

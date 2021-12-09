@@ -53,7 +53,7 @@
                         {#  Si app.user retourne true, cela vaut dire que l'internaute est connecter, il rentre dans le IF #}
                         {% if app.user %}                    
                         
-                             <a class="link-secondary" href="#" title=" Acces a votre compte">Bonjour <strong>{{ app.user.prenom }} {{ app.user.nom}}</strong></a>
+                             <a class="link-secondary" href="{{ path('app_profil') }}" title=" Acces a votre compte">Bonjour <strong>{{ app.user.prenom }} {{ app.user.nom}}</strong></a>
 
                         {% else %}
                         
@@ -69,13 +69,21 @@
                         <a class="link-secondary" href="#" aria-label="Search">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="mx-3" role="img" viewBox="0 0 24 24"><title>Search</title><circle cx="10.5" cy="10.5" r="7.5"/><path d="M21 21l-5.2-5.2"/></svg>
                         </a>
+
+                        {# is_granted() : fonction twig qui verifie si l'utilisateur ici a un role admin enregistré dans la session donc en BDD #}
+                        {% if is_granted('ROLE_ADMIN') %}
+                             <a class="btn btn-sm btn-outline-info me-2" href="{{ path('app_admin') }}">BACKOFFICE</a>
+                            
+                        {% endif %}
+
+
                         {% if app.user %}
 
-                            <a class="btn btn-sm btn-outline-secondary" href="{{ path('app_logout') }}">Deconnexion</a>
+                            <a class="btn btn-sm btn-outline-danger" href="{{ path('app_logout') }}">Deconnexion</a>
                             
                         {% else %}
 
-                            <a class="btn btn-sm btn-outline-secondary" href="{{ path('app_login') }}">Identifiez-vous</a>
+                            <a class="btn btn-sm btn-outline-success" href="{{ path('app_login') }}">Identifiez-vous</a>
 
                         {% endif %}
                     </div>
@@ -115,7 +123,7 @@
     </div>
 
         {# app;user est un objet twig contenant toutes les informations de l'internaute authentifie sur le site dans la session de l'utilisateur #}
-        {{ dump(app.user) }}
+        {# {{ dump(app.user) }} #}
 
         {% block body %}
             

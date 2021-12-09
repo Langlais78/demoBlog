@@ -13,6 +13,13 @@ class SecurityController extends AbstractController
     #[Route("/login", name:"app_login")]    
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
+
+         // Si getUser() renvoi des données, cela veut dire que l'internaute est authentifié, il n'a rien à faire sur la route '/register', on le redirige vers la route de connexion '/blog'
+        if($this->getUser())
+        {
+            return $this->redirectToRoute ('blog');
+        }
+
         // if ($this->getUser()) {
         //     return $this->redirectToRoute('target_path');
         // }
