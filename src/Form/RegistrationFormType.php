@@ -18,7 +18,87 @@ class RegistrationFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder
+        if($options['userRegistration'] == true)
+        {
+            $builder
+                ->add('email', TextType::class, [
+                    'required' => false,
+                    'constraints' => [
+                        new NotBlank([
+                            'message' => "veuillez renseigner votre email"
+                        ])
+                    ]
+                ])
+                ->add('prenom', TextType::class, [
+                    'required' => false,
+                    'constraints' => [
+                        new NotBlank([
+                            'message' => "veuillez renseigner votre email"
+                        ])
+                    ]
+                ])
+                ->add('nom', TextType::class, [
+                    'required' => false,
+                    'constraints' => [
+                        new NotBlank([
+                            'message' => "veuillez renseigner votre email"
+                        ])
+                    ]
+                ])
+                ->add('adresse', TextType::class, [
+                    'required' => false,
+                    'constraints' => [
+                        new NotBlank([
+                            'message' => "veuillez renseigner votre email"
+                        ])
+                    ]
+                ])
+                ->add('ville', TextType::class, [
+                    'required' => false,
+                    'constraints' => [
+                        new NotBlank([
+                            'message' => "veuillez renseigner votre email"
+                        ])
+                    ]
+                ])
+                ->add('codePostal', TextType::class, [
+                    'required' => false,
+                    'constraints' => [
+                        new NotBlank([
+                            'message' => "veuillez renseigner votre email"
+                        ])
+                    ]
+                ])
+                ->add('password', RepeatedType::class, [
+                    'type' => PasswordType::class,
+                    'required' => false,
+                    'invalid_message' => "les mots de passe ne correspondent pas",
+                    'options' => [
+                        'attr' => [
+                            'class' => 'password-field'
+                        ]
+                    ],
+                    'first_options' => [
+                        'label' => 'mot de passe'
+                    ],
+                    'second_options' => [
+                        'label' => "Confirmer votre mot de passe"
+                    ],
+                    'constraints' => [
+                        new NotBlank([
+                            'message' => 'Veuillez renseigner votre mot de passe'
+                        ]),
+                        new Length([
+                            'min' => 8,
+                            'minMessage' => "Votre mot de passe doit contenir au minimum 8 caractères"
+                        ])
+                    ]
+                ])
+            ;
+        }
+        elseif($options['userUpdate'] == true)
+        {
+            $builder
             ->add('email', TextType::class, [
                 'required' => false,
                 'constraints' => [
@@ -66,39 +146,16 @@ class RegistrationFormType extends AbstractType
                         'message' => "veuillez renseigner votre email"
                     ])
                 ]
-            ])
-            ->add('password', RepeatedType::class, [
-                'type' => PasswordType::class,
-                'required' => false,
-                'invalid_message' => "les mots de passe ne correspondent pas",
-                'options' => [
-                    'attr' => [
-                        'class' => 'password-field'
-                    ]
-                ],
-                'first_options' => [
-                    'label' => 'mot de passe'
-                ],
-                'second_options' => [
-                    'label' => "Confirmer votre mot de passe"
-                ],
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'Veuillez renseigner votre mot de passe'
-                    ]),
-                    new Length([
-                        'min' => 8,
-                        'minMessage' => "Votre mot de passe doit contenir au minimum 8 caractères"
-                    ])
-                ]
-            ])
-        ;
+            ]);
+        }
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => User::class,
+            'userRegistration' => false,
+            'userUpdate' => false
         ]);
     }
 }

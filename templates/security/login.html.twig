@@ -13,6 +13,14 @@
         </div>
     {% endif %}
 
+    {% for message in app.flashes('success') %}
+
+        <div class="col-4 bg-success p-3 text-white text-center mx-auto my-3 rounded">
+            {{ message }}
+        </div>
+        
+    {% endfor %}
+
     <h1 class="h3 mb-3 font-weight-normal text-center">Identifiez-vous</h1>
 
         <form method="post" class="col-4 mx-auto">
