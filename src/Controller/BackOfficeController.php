@@ -3,7 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\Article;
+use App\Entity\Comment;
 use App\Repository\ArticleRepository;
+use App\Repository\CommentRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -41,6 +43,22 @@ class BackOfficeController extends AbstractController
 
         return $this->render('back_office/admin_articles.html.twig', [
             'colonnes' => $colonnes, // 
+            'cellules' => $cellules
+        ]);
+    }
+
+    #[Route('/admin/comments', name: 'app_admin_comments')]
+    public function adminComments(EntityManagerInterface $manager, CommentRepository $repoComment)
+    {
+
+        $colonnes = $manager->getclassMetadata(Comment::class)->getFieldNames();
+
+        $cellules = $repoComment->findAll();
+
+        //dd($cellules);
+
+        return $this->render('back_office/admin_comments.html.twig', [
+            'colonnes' => $colonnes,
             'cellules' => $cellules
         ]);
     }

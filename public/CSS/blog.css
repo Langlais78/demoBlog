@@ -1,4 +1,11 @@
 /* stylelint-disable selector-list-comma-newline-after */
+.azerty{
+  max-height: 200px;
+}
+
+.bg-comments{
+  background-color: #e5e5e5;
+}
 
 .img-modif{
   width: 100px;

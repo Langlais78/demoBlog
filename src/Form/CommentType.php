@@ -18,6 +18,9 @@ class CommentType extends AbstractType
             ->add('auteur', TextType::class, [
                 'label' => 'Saisir votre nom et prenom :',
                 'required' => false,
+                'attr' => [
+                    'class' => "bg-comments"
+                ],
                 'constraints' => [
                     New NotBlank([
                         'message' => "Merci de saisir un Nom"
@@ -28,7 +31,8 @@ class CommentType extends AbstractType
                 'label' => 'Votre commentaire :',
                 'required' => false,
                 'attr' => [
-                    'rows' => 10
+                    'rows' => 10,
+                    'class' => "bg-comments"
                 ],
                 'constraints' => [
                     New NotBlank([
