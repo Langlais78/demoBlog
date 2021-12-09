@@ -1,0 +1,44 @@
+{% extends "base_admin.html.twig" %}
+
+{% block title %}
+    BlogSymfony | Gestions des commentaires
+{% endblock %}
+
+{% block body %}
+
+    <h1 class="text-center my-2">Commentaires</h1>
+
+        <table class="table table-striped mx-2">
+            <tr>
+                {% for data in colonnes %}
+
+                    {% if data != 'id' %}
+
+                        <th class="text-center"> {{data|capitalize}} </th>
+
+                    {% endif %}
+                    
+                {% endfor %}
+
+                <th class="text-center">Action</th>
+            </tr> 
+
+             {% for data in cellules %} 
+
+                {% if data != 'id'  %}
+                <tr>
+        
+                <td> {{ data.commentaire|slice(0, 100)|striptags }}[...] </td>
+                <td class="text-center"> {{ data.auteur}} </td>
+                <td class="text-center"> {{ data.date|date("d/m/Y") }} {{data.date|date('H:i:s')}} </td>
+                {# <td class="text-center"> {{ data.article }} </td> #}
+                <td ><div class="d-flex nowrap"><a href="" class="btn bg-danger text-white me-1"><i class="bi bi-trash"></i></a><a href="" class="btn bg-success text-white"><i class="bi bi-pencil-square"></i></a><div></td>
+
+                </tr>
+
+                {% endif %}  
+
+            {% endfor %}       
+        </table>
+
+{% endblock %}

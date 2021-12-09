@@ -20,6 +20,7 @@
         "symfony/console": "6.0.*",
         "symfony/dotenv": "6.0.*",
         "symfony/expression-language": "6.0.*",
+        "symfony/finder": "^6.0",
         "symfony/flex": "^2",
         "symfony/form": "6.0.*",
         "symfony/framework-bundle": "6.0.*",
@@ -51,7 +52,7 @@
         "symfony/browser-kit": "6.0.*",
         "symfony/css-selector": "6.0.*",
         "symfony/debug-bundle": "6.0.*",
-        "symfony/maker-bundle": "^1.0",
+        "symfony/maker-bundle": "^1.36",
         "symfony/phpunit-bridge": "^6.0",
         "symfony/stopwatch": "6.0.*",
         "symfony/web-profiler-bundle": "6.0.*"
