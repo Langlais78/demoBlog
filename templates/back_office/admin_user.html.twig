@@ -1,0 +1,54 @@
+{% extends "base_admin.html.twig" %}
+
+{% block title %}
+    BlogSymfony | Gestions des articles
+{% endblock %}
+
+{% block body %}
+
+    <h1 class="text-center my-2">Liste des Utilisateurs</h1>
+
+    <table class="table table-striped mx-2 rounded-top">
+        <tr class="entete-users">
+            {% for data in titre %}
+
+                {% if data != 'id' %}
+                    {% if data != 'password' %}
+
+                        <th class="text-center"> {{data|capitalize}} </th>
+                    {% endif %}
+                {% endif %}
+                
+            {% endfor %}
+            
+            
+            <th class="text-center">Action</th>
+        </tr>
+        
+            {% for data in values %} 
+
+                {% if data != 'id' %}
+                <tr>
+        
+                <td> {{ data.email }} </td>
+                {% if data != 'ROLE_ADMIN'  %}
+                    <td class="text-center"> USER </td>
+                {% else %}
+                    <td class="text-center"> ADMIN </td>
+                {% endif %}
+                <td class="text-center"> {{ data.prenom|capitalize}} </td>
+                <td class="text-center"> {{ data.nom|upper}} </td>
+                <td class="text-center"> {{ data.adresse}} </td>
+                <td class="text-center"> {{ data.ville|capitalize}} </td>
+                <td class="text-center"> {{ data.codepostal}} </td>
+                <td><div class="d-flex nowrap justify-content-center"><a href="" class="btn bg-danger text-white me-1"><i class="bi bi-trash"></i></a><a href="" class="btn bg-success text-white"><i class="bi bi-pencil-square"></i></a><div></td>
+
+                </tr>
+
+                {% endif %}  
+
+            {% endfor %}
+        
+    </table>
+    
+{% endblock %}

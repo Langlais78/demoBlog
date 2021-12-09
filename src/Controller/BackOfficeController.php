@@ -2,8 +2,10 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
 use App\Entity\Article;
 use App\Entity\Comment;
+use App\Repository\UserRepository;
 use App\Repository\ArticleRepository;
 use App\Repository\CommentRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -60,6 +62,24 @@ class BackOfficeController extends AbstractController
         return $this->render('back_office/admin_comments.html.twig', [
             'colonnes' => $colonnes,
             'cellules' => $cellules
+        ]);
+    }
+
+    #[Route('/admin/user', name: 'app_admin_user')]
+    public function adminUsers(EntityManagerInterface $manager, UserRepository $repoUser)
+    {
+
+        $titre = $manager->getclassMetadata(User::class)->getFieldNames();
+
+        $values = $repoUser->findAll();
+
+        //dd($values);
+
+        //dd($cellules);
+
+        return $this->render('back_office/admin_user.html.twig', [
+            'titre' => $titre,
+            'values' => $values
         ]);
     }
 }

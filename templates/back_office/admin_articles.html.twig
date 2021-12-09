@@ -9,7 +9,7 @@
     <h1 class="text-center my-2">Liste des articles</h1>
 
     <table class="table table-striped mx-2">
-        <tr>
+        <tr class="entete-articles">
             {% for data in colonnes %}
 
                 {% if data != 'id' %}
@@ -32,9 +32,9 @@
                 <td> {{ data.titre }} </td>
                 <td> {{ data.contenu|slice(0, 100)|striptags }}[...] </td>
                 <td class="text-center"><img src="{{ asset('uploads/photos/' ~ data.photo) }}" alt="" style="width: 40%;"></td>
-                <td class="text-center"> {{ data.date|date("d/m/Y") }} {{data.date|date('H:i:s')}} </td>
-                <td class="text-center"> {{ data.category.titre }} </td>
-                <td class="text-center"> {{ data.comments|length}} </td>
+                <td class="text-center"> {{ data.date|date("d/m/Y") }} {{data.date|date('H:i:s') }} </td>
+                <td class="text-center"> {{ data.category.titre|upper }} </td>
+                <td class="text-center"> {{ data.comments|length }} </td>
                 <td ><div class="d-flex nowrap"><a href="" class="btn bg-danger text-white me-1"><i class="bi bi-trash"></i></a><a href="" class="btn bg-success text-white"><i class="bi bi-pencil-square"></i></a><div></td>
 
                 </tr>
