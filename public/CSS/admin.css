@@ -87,3 +87,15 @@ overflow-y: auto;
 
 .fw-semibold { font-weight: 600; }
 .lh-tight { line-height: 1.25; }
+
+.entete-users{
+    background-color: #d2f4ea;
+}
+
+.entete-comments{
+    background-color: antiquewhite;
+}
+
+.entete-articles{
+    background-color: lightblue;
+}
