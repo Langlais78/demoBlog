@@ -1,0 +1,54 @@
+{% extends "base_admin.html.twig" %}
+
+{% block title %}
+
+    Blog Symfony |
+
+ {% if editMode %}    
+        Modification de l'article
+    {% else %}        
+        Nouvel article
+    {% endif %}
+
+{% endblock %}
+
+{% block body %}
+
+    <h1 class="text-center my-5">nouvel article</h1> 
+
+    <div class="col-8 mx-auto">
+    {{ form_start(formAdminArticle) }}
+
+        {{ form_row(formAdminArticle.titre) }}
+
+        {{ form_row(formAdminArticle.contenu) }}
+
+        {{ form_row(formAdminArticle.photo) }}
+
+        {{ form_row(formAdminArticle.category) }}
+
+        {% if photoActuelle %}
+
+        {# Si photoActuelle retourne TRUE, cela veut dire que l'article possède une photo, c'est une modification, alors on entre dans la condition IF et on affiche la photoactuelle de l'article #}
+        <em>Vous pouvez mettre une autre photo si vous souhaitez la modifier</em>
+        <P class="col-12 text-center">
+            <img src="{{ asset('uploads/photos/' ~ photoActuelle) }}" alt="" class="col-12 img-responsive img-modif ">
+        </p>
+            
+        {% endif %}
+
+        <div class="text-center">
+            <button type="submit" class="btn btn-primary col-3">
+            
+            {% if editMode %}    
+                Enregistrer
+            {% else %}
+                Envoyer
+            {% endif %}
+            
+            </button>
+        </div>
+    {{ form_end(formAdminArticle) }}
+</div>  
+    
+{% endblock %}
