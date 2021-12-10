@@ -75,8 +75,6 @@ class BackOfficeController extends AbstractController
 
         //dd($values);
 
-        //dd($cellules);
-
         return $this->render('back_office/admin_user.html.twig', [
             'titre' => $titre,
             'values' => $values
