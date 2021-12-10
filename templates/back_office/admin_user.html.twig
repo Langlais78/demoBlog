@@ -30,12 +30,12 @@
                 {% if data != 'id' %}
                 <tr>
         
-                <td> {{ data.email }} </td>
-                {% if data != 'ROLE_ADMIN'  %}
+                <td> {{ data.email }} </td>               
+                {% if data.roles[0] != "ROLE_ADMIN"  %}
                     <td class="text-center"> USER </td>
                 {% else %}
                     <td class="text-center"> ADMIN </td>
-                {% endif %}
+                {% endif %}              
                 <td class="text-center"> {{ data.prenom|capitalize}} </td>
                 <td class="text-center"> {{ data.nom|upper}} </td>
                 <td class="text-center"> {{ data.adresse}} </td>
@@ -45,7 +45,7 @@
 
                 </tr>
 
-                {% endif %}  
+                {% endif %}
 
             {% endfor %}
         
