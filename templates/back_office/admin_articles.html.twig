@@ -8,41 +8,61 @@
 
     <h1 class="text-center my-2">Liste des articles</h1>
 
-    <table class="table table-striped mx-2">
-        <tr class="entete-articles">
-            {% for data in colonnes %}
+    {% for message in app.flashes('success') %}
+        <div class="col-6 mx-auto text-center alert alert-success">
+            {{ message }}
+        </div>        
+    {% endfor %}
 
-                {% if data != 'id' %}
+    <table class="table table-striped mx-2" id="table-backoffice">
+        <thead>
+            <tr class="entete-articles">
+                {% for data in colonnes %}
 
-                    <th class="text-center"> {{data|capitalize}} </th>
+                    {% if data != 'id' %}
 
-                {% endif %}
-                
-            {% endfor %}
-            <th class="text-center">Cat</th>
-            <th class="text-center">No Comm.</th>
-            <th class="text-center">Action</th>
-        </tr>
-        
+                        <th class="text-center"> {{data|capitalize}} </th>
+
+                    {% endif %}
+                    
+                {% endfor %}
+                <th class="text-center">Cat</th>
+                <th class="text-center">No Comm.</th>
+                <th class="text-center">Action</th>
+            </tr>
+        </thead>
+
+        <tbody>        
             {% for data in cellules %} 
 
                 {% if data != 'id' %}
-                <tr>
-        
-                <td> {{ data.titre }} </td>
-                <td> {{ data.contenu|slice(0, 100)|striptags }}[...] </td>
-                <td class="text-center"><img src="{{ asset('uploads/photos/' ~ data.photo) }}" alt="" style="width: 40%;"></td>
-                <td class="text-center"> {{ data.date|date("d/m/Y") }} {{data.date|date('H:i:s') }} </td>
-                <td class="text-center"> {{ data.category.titre|upper }} </td>
-                <td class="text-center"> {{ data.comments|length }} </td>
-                <td ><div class="d-flex nowrap"><a href="" class="btn bg-danger text-white me-1"><i class="bi bi-trash"></i></a><a href="" class="btn bg-success text-white"><i class="bi bi-pencil-square"></i></a><div></td>
+                    <tr>
+            
+                    <td> <a  href="{{ path('blog_show', {'id': data.id}) }}" class="link-secondary">{{ data.titre }} </a></td>
+                    <td> {{ data.contenu|slice(0, 150)|striptags }}[...] </td> 
+                    {% if data.photo != null %}
+                        <td class="text-center"><img src="{{ asset('uploads/photos/' ~ data.photo) }}" alt="" style="width: 40%;"></td>
+                    {% else %}
+                        <td class="text-danger text-center">Aucune photo téléchargée</td>
+                    {% endif %}               
+                    <td class="text-center"> {{ data.date|date("d/m/Y") }} {{data.date|date('H:i:s') }} </td>
+                    <td class="text-center"> {{ data.category.titre|upper }} </td>
+                    <td class="text-center"> {{ data.comments|length }} </td>
 
-                </tr>
+                    <td >
+                        <div class="d-flex nowrap">
+                            <a href="{{ path('app_admin_articles_remove', {'id': data.id}) }}" class="btn bg-danger text-white me-1" onclick="return(confirm('Etes-vous sur de vouloir supprimer cet article : {{ data.titre }}' ))"><i class="bi bi-trash"></i></a>
+                            <a href="{{ path('app_admin_articles_update', {'id': data.id}) }}" class="btn bg-success text-white"><i class="bi bi-pencil-square"></i>
+                            </a>
+                        <div>
+                    </td>
+
+                    </tr>          
 
                 {% endif %}  
 
             {% endfor %}
-        
+        </tbody>
     </table>
     
 {% endblock %}
