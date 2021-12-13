@@ -2,11 +2,14 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
 use App\Entity\Article;
 use App\Entity\Comment;
+use App\Entity\Category;
 use App\Form\ArticleType;
 use App\Form\CommentType;
 use App\Repository\ArticleRepository;
+use App\Repository\CategoryRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
@@ -29,9 +32,21 @@ class BlogController extends AbstractController
         ]);
     }
 
-    #[Route('/blog', name: 'blog')]
-    public function blog(ArticleRepository $repoArticle): Response
+    # Cette méthode permet de selectionner toutes les catégories de la BDD mais ne possede pas de route, les catégories seront intégrées dans base.html.twig
+    public function allCategory(CategoryRepository $repoCategory)
     {
+        $categorys = $repoCategory->findAll();
+        return $this->render('blog/categorys_list.html.twig', [
+            'categorys' => $categorys
+        ]);
+    }
+
+    #[Route('/blog', name: 'blog')]
+    #[Route('/blog/category/{id}', name: 'blog_category')]
+    public function blog(ArticleRepository $repoArticle, Category $category = null): Response
+    {
+
+        //dd($category->getArticles());
         /*
 
         Injection de dependances :  c'est un des fondement de symfony, ici notre methode DEPEND de la classe ArticleRepository pour fonctionner correctement 
@@ -54,9 +69,23 @@ class BlogController extends AbstractController
         // dump() / dd() : outil de debug de symfony
         //dd($repoArticle);
 
-        // FIndAll () ; methode issue de la classe ArticleREpository permettant de selectionner l'enssemble de la table SQL et de recuperer un tableau multi contenant l'enssemble des articles stockés en BDD
-        $articles = $repoArticle->findAll(); // SELECT * FROM article + FETCH_ALL
-        //dd($articles);
+        // Si la condition return TRUE, cela veut dire que l'utilisateur a cliqué sur le lien d'une catégorie en BDD, nous accès automatiquement à tous les articles liés a cette catégorie
+        // getArticles()  retourne un Array multi contenant tout le sarticle liés a la category transmise dans l'URL
+        if($category)
+        {
+            // Grace au relation bi-directionnelle, lorsque nous selectionnons une categorie en BDD, nous avons acces automatiquement a tout les article liée a cette categorie
+            $articles = $category->getArticles();
+        }
+        else// sinon aucune categories n'est transmise dans l'URL, alors on selectionne tout les articles dans la BDD
+        {
+
+            // FIndAll () ; methode issue de la classe ArticleREpository permettant de selectionner l'enssemble de la table SQL et de recuperer un tableau multi contenant l'enssemble des articles stockés en BDD
+            $articles = $repoArticle->findAll(); // SELECT * FROM article + FETCH_ALL
+            //dd($articles);
+
+        }
+
+        
 
        // dd($articles);
 
@@ -206,36 +235,42 @@ class BlogController extends AbstractController
     # On defeni une route 'parametrée' {id}, ici la route permet d erecevoir l'id d'un article stockée en BDD
     #        /blog/5
     #[Route('/blog/{id}', name: 'blog_show')]
-    public function blogShow(Article $article, Request $request, EntityManagerInterface $manager ): Response
+    public function blogShow(Article $article, Request $request, EntityManagerInterface $manager): Response
     {
         // Cette methode mise a disposition retourne un objet app\entity\article contenant tout les données de l'utilisateur authentifié sur le site
     
-
+        // getUser() : methode de symfony qui retourne un objet (App/Entity/User) contenant les informatons de l'utilisateur authentifié sur le blog
         $user = $this->getUser();
 
         //dd($user);
 
         $comment = new Comment;
 
-        $formComment = $this->createForm(CommentType::class, $comment);
+
+        $formComment = $this->createForm(CommentType::class, $comment, [
+            'commentFormFront' => true// on indique dans quelle condition IF on entre dans le fichie App/for/controller/Type' et quel formulaire nous affichons
+        ]);
 
         $formComment->handleRequest($request);
 
         if ($formComment->isSubmitted() && $formComment->isValid())
         { 
 
+             // getUser() : methode de symfony qui retourne un objet (App/Entity/User) contenant les informatons de l'utilisateur authentifié sur le blog
+            $user = $this->getUser();
             
             $comment->setDate(new \DateTime())
-                    ->setarticle($article);// on relie le commentaire a l'article
-
+                    ->setAuteur($user->getPrenom() . ' ' . $user->getNom())
+                    ->setArticle($article);// on relie le commentaire a l'article
+                    
             //dd($comment);
 
-        $this->addFlash('success', "l'article a été enregistré avec succès !");
+        
 
         $manager->persist($comment);
         $manager->flush();
 
-        $this->addFlash('success', "le commantaire a été posté avec succès !");
+        $this->addFlash('success', "Le commentaire a été posté avec succès !");
 
         return $this->redirectToRoute('blog_show', [
             'id' => $article->getId()

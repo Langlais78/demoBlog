@@ -5,6 +5,8 @@ namespace App\Form;
 use App\Entity\Category;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -15,16 +17,37 @@ class CategoryFormType extends AbstractType
     {
         $builder
             ->add('titre', TextType::class, [
-                'label' => 'Titre de la catégorie :'])
+                'label' => 'Titre de la catégorie :',
+                'required' => false,
+                'attr' => [
+                    'placeholder' =>"Saisir le contenue de l'article",
+                    'class' => "bg-comments"
+                    ],
+                    "constraints" => [
+                    new NotBlank([
+                        'message' =>'Merci de saisir le nom de la catégorie.'
+                    ]),
+                    new Length([
+                        'max' => 15,
+                        'maxMessage' =>"Titre de catégorie trop long (15 caractères max)"
+                    ])
+                    ]
+                ])
                 
             ->add('description', TextareaType::class, [
                 'label' => 'Contenu de l\'article :',
                 'required' => false,
                 'attr' => [
                     'placeholder' =>"Saisir le contenue de l'article",
-                    'rows' => 10
-                    ]
-                ])
+                    'rows' => 10,
+                    'class' => "bg-comments"
+                ],
+                "constraints" => [
+                    new NotBlank([
+                        'message' =>'Merci de saisir la description de la catégorie.'
+                    ])
+                ]
+            ])
         ;
     }
 

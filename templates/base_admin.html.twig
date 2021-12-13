@@ -66,39 +66,48 @@
             <span class="fs-4"><i class="bi bi-bootstrap icon-titre"></i>ACKOFFICE</span>
             </a>
             <hr>
+            {# {{ dump(app.request.attributes.get('_route')) }} #}
+            {% set route_name = app.request.attributes.get('_route') %}
                 <ul class="nav nav-pills flex-column mb-auto">
                 <li class="nav-item">
-                    <a href=" {{ path('app_admin') }} " class="nav-link text-white" aria-current="page">
+                    <a href=" {{ path('app_admin') }} " class="nav-link text-white {% if route_name == 'app_admin' %} active {% endif %}"
+                     aria-current="page">
                     <i class="bi bi-house-fill"></i>&nbsp;
                     Home
                     </a>
                 </li>
+                <li>
+                    <a href="{{ path('app_admin_articles') }}" class="nav-link text-white {% if route_name == 'app_admin_articles' %} active {% endif %}">
+                    <i class="bi bi-card-text"></i>&nbsp;
+                    Articles
+                    </a>
+                </li>
                  <li>
-                    <a href="{{ path('app_admin_articles_add') }}" class="nav-link text-white">
-                    <i class="bi bi-badge-wc"></i></i>&nbsp;
+                    <a href="{{ path('app_admin_articles_add') }}" class="nav-link text-white ms-2 {% if route_name == 'app_admin_articles_add' %} active {% endif %}">
+                    <i class="bi bi-badge-ad"></i>&nbsp;
                     Nouvel article
                     </a>
                 </li>
                 <li>
-                    <a href="{{ path('app_admin_articles') }}" class="nav-link text-white">
-                    <i class="bi bi-badge-wc"></i></i>&nbsp;
-                    Articles
-                    </a>
-                </li>
-                <li>
-                    <a href="{{ path('app_admin_category') }}" class="nav-link text-white">
+                    <a href="{{ path('app_admin_category') }}" class="nav-link text-white {% if route_name == 'app_admin_category' %} active {% endif %}">
                     <i class="bi bi-card-list"></i>&nbsp;
                     Categories
                     </a>
                 </li>
                 <li>
-                    <a href="{{ path('app_admin_comments') }}" class="nav-link text-white">
+                    <a href="{{ path('app_admin_category_add') }}" class="nav-link text-white ms-2 {% if route_name == 'app_admin_category_add' %} active {% endif %}">
+                    <i class="bi bi-badge-ad"></i>&nbsp;
+                    Nouvel categorie
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ path('app_admin_comments') }}" class="nav-link text-white {% if route_name == 'app_admin_comments' %} active {% endif %}">
                     <i class="bi bi-chat-dots"></i>&nbsp;
                     Commentaires
                     </a>
                 </li>
                 <li>
-                    <a href="{{ path('app_admin_user') }}" class="nav-link text-white">
+                    <a href="{{ path('app_admin_user') }}" class="nav-link text-white {% if route_name == 'app_admin_user' %} active {% endif %}">
                     <i class="bi bi-people"></i>&nbsp;
                     Utilisateur
                     </a>
@@ -107,7 +116,7 @@
             <hr>
             <div class="dropdown">
                 <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
-                    <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2">
+                    <img src="{{ asset('uploads/photos/vegeta-61af607e4ab91-61b351812faf6.jpg') }}" alt="" width="32" height="32" class="rounded-circle me-2">
                     <strong>{{ app.user.prenom }} {{ app.user.nom }}</strong>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">

@@ -4,7 +4,7 @@ $(document).ready(function() {
             url: '/js/dataTables.french.json'
         },
         "aoColumnDefs": [
-            { 'bSortable': false, 'aTargets': [ 1,2,5,5 ] }
+            { 'bSortable': false, 'aTargets': [ 1,2,5,6 ] }
         ]
     });
 });
@@ -16,6 +16,28 @@ $(document).ready(function() {
         },
         "aoColumnDefs": [
             { 'bSortable': false, 'aTargets': [ 1,3 ] }
+        ]
+    });
+});
+
+$(document).ready(function() {
+    $('#table-comments').DataTable({
+        language: {
+            url: '/js/dataTables.french.json'
+        },
+        "aoColumnDefs": [
+            { 'bSortable': false, 'aTargets': [ 3 ] }
+        ]
+    });
+});
+
+$(document).ready(function() {
+    $('#table-user').DataTable({
+        language: {
+            url: '/js/dataTables.french.json'
+        },
+        "aoColumnDefs": [
+            { 'bSortable': false, 'aTargets': [ 4,7 ] }
         ]
     });
 });

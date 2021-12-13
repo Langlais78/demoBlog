@@ -8,7 +8,8 @@
 
     <h1 class="text-center my-2">Liste des Utilisateurs</h1>
 
-    <table class="table table-striped mx-2 rounded-top">
+    <table class="table table-striped mx-2 rounded-top" id="table-user">
+    <thead>
         <tr class="entete-users">
             {% for data in titre %}
 
@@ -24,6 +25,8 @@
             
             <th class="text-center">Action</th>
         </tr>
+        </thead>
+        <tbody>
         
             {% for data in values %} 
 
@@ -48,7 +51,7 @@
                 {% endif %}
 
             {% endfor %}
-        
+        </tbody>
     </table>
     
 {% endblock %}

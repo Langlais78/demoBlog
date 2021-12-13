@@ -148,6 +148,66 @@ class RegistrationFormType extends AbstractType
                 ]
             ]);
         }
+        elseif($options['userBack'] == true)
+        {
+            $builder
+            ->add('email', TextType::class, [
+                'required' => false,
+                'constraints' => [
+                    new NotBlank([
+                        'message' => "veuillez renseigner votre email"
+                    ])
+                ]
+            ])
+            ->add('roles', TextType::class, [
+                'required' => false,
+                'constraints' => [
+                    new NotBlank([
+                        'message' => "veuillez renseigner un statut"
+                    ])
+                ]
+            ])
+            ->add('prenom', TextType::class, [
+                'required' => false,
+                'constraints' => [
+                    new NotBlank([
+                        'message' => "veuillez renseigner votre email"
+                    ])
+                ]
+            ])
+            ->add('nom', TextType::class, [
+                'required' => false,
+                'constraints' => [
+                    new NotBlank([
+                        'message' => "veuillez renseigner votre email"
+                    ])
+                ]
+            ])
+            ->add('adresse', TextType::class, [
+                'required' => false,
+                'constraints' => [
+                    new NotBlank([
+                        'message' => "veuillez renseigner votre email"
+                    ])
+                ]
+            ])
+            ->add('ville', TextType::class, [
+                'required' => false,
+                'constraints' => [
+                    new NotBlank([
+                        'message' => "veuillez renseigner votre email"
+                    ])
+                ]
+            ])
+            ->add('codePostal', TextType::class, [
+                'required' => false,
+                'constraints' => [
+                    new NotBlank([
+                        'message' => "veuillez renseigner votre email"
+                    ])
+                ]
+            ]);
+        }
     }
 
     public function configureOptions(OptionsResolver $resolver): void
