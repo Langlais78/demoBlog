@@ -7,6 +7,7 @@ use App\Entity\Article;
 use App\Entity\Comment;
 use App\Entity\Category;
 use App\Form\ArticleType;
+use App\Form\CommentType;
 use App\Form\CategoryFormType;
 use App\Controller\BlogController;
 use App\Repository\UserRepository;
@@ -78,16 +79,39 @@ class BackOfficeController extends AbstractController
         ]);
     }
 
-   
+   /*
+    Exo: Affichage et suppression des commentaires
+    1. Création d'une nouvelle route '/admin/commentaires' (name: app_admin_commentaires)
+    2. Création d'une nouvelle méthode adminCommentaires()
+    3. Création d'un nouveau template 'admin_commentaires.html.twig
+    4. Sélectionner les noms/champs colonne de la table 'Comment' et les afficher sur le template
+    5. Sélectionner l'ensemble de la table 'Comment' et afficher les données sous forme de tableau
+    6. Mettre en place 'dataTable' pour pouvoir filtrer/rechercher des commentaires
+    7. Créer une nouvelle route (sur la même méthode) '/admin/comment/{id}/remove' (name: app_admin_comment_remove)
+    8. Réaliser le traitement permettant de supprimer un commentaire dans la BDD
+   */
 
 
     #[Route('/admin/comments', name: 'app_admin_comments')]
-    public function adminComments(EntityManagerInterface $manager, CommentRepository $repoComment)
+    #[Route('/admin/comments/{id}/remove', name: 'app_admin_comments_remove')]
+    public function adminComments(EntityManagerInterface $manager, CommentRepository $repoComment, Comment $commentDelete = null)
     {
 
         $colonnes = $manager->getclassMetadata(Comment::class)->getFieldNames();
 
         $cellules = $repoComment->findAll();
+
+        if ($commentDelete)
+        {
+            $id = $commentDelete->getId();
+
+            $manager->remove($commentDelete);
+            $manager->flush();
+
+            $this->addFlash('success', "Le commentaire n° $id a bien été supprimer avec succès");
+
+            return $this->redirectToRoute('app_admin_comments');
+        }
 
         //dd($cellules);
 
@@ -97,21 +121,38 @@ class BackOfficeController extends AbstractController
         ]);
     }
 
-    #[Route('/admin/user', name: 'app_admin_user')]
-    public function adminUsers(EntityManagerInterface $manager, UserRepository $repoUser)
+    #[Route('/admin/comments/{id}/edit', name: 'app_admin_comments_update')]
+    public function adminCommentsForm(Comment $comments = null, Request $request, EntityManagerInterface $manager): Response
     {
 
-        $titre = $manager->getclassMetadata(User::class)->getFieldNames();
-
-        $values = $repoUser->findAll();
-
-        //dd($values);
-
-        return $this->render('back_office/admin_user.html.twig', [
-            'titre' => $titre,
-            'values' => $values
+        $formAdminCom = $this->createForm(CommentType::class, $comments, [
+            'commentFormBack' => true 
         ]);
+
+        $formAdminCom->handleRequest($request);
+
+            if($formAdminCom->isSubmitted() && $formAdminCom->isValid())
+            {   
+
+                $comments->setDate(new \DateTime());
+
+                $manager->persist($comments);
+                $manager->flush();
+
+                $idCom = $comments->getId();
+
+                $this->addFlash('success', "Le commentaire '$idCom' été modifié avec succès !");
+
+                return $this->redirectToRoute('app_admin_comments');         
+            
+            }        
+
+        return $this->render('back_office/admin_comments_form.html.twig', [
+            'formAdminCom' => $formAdminCom->createView(),
+            'editmode' => $comments->getId()
+            ]);
     }
+
 
     #[Route('/admin/articles/add', name: 'app_admin_articles_add')]
     #[Route('/admin/articles/{id}/edit', name: 'app_admin_articles_update')]
@@ -214,17 +255,30 @@ class BackOfficeController extends AbstractController
 
         $cellules = $repoComment->findAll();
 
-        //dd($cellules);
+      
 
+        //dd($cellules);
         if($catRemove)
         {
-            // avant de supprimer l'article dans la BDD, on stock son ID afin de l'intégrer dans le message de validation de suppression (addFlash)
-            $id = $catRemove->getId();
 
-            $manager->remove($catRemove);
-            $manager->flush();
+            $catTitre = $catRemove->getTitre();
 
-            $this->addFlash('success', "L'article a bien été supprimer avec succès");
+            if($catRemove->getArticles()->isEmpty())
+            {
+                // avant de supprimer l'article dans la BDD, on stock son ID afin de l'intégrer dans le message de validation de suppression (addFlash)
+                //$id = $catRemove->getId();
+
+                $manager->remove($catRemove);
+                $manager->flush();
+
+                $this->addFlash('success', "La catégorie '$catTitre' a bien été supprimé avec succès.");
+
+                
+            }
+            else
+            {
+                $this->addFlash('danger', "Impossible de supprimer la catégory '$catTitre' car il y a encore des articles associés");
+            }
 
             return $this->redirectToRoute('app_admin_category');
         }
@@ -236,17 +290,12 @@ class BackOfficeController extends AbstractController
         
     }
 
+    
     #[Route('/admin/category/add', name: 'app_admin_category_add')]
-    public function adminCategoryAdd()
-    {
-        return $this->render('back_office/admin_category_add.html.twig');
-    }
-
-    #[Route('/admin/category/add', name: 'app_admin_category_add')]
+    #[Route('/admin/category/{id}/edit', name: 'app_admin_category_update')]
     public function adminCategoryForm(Category $category = null, Request $request, EntityManagerInterface $manager): Response
     {
-       
-
+ 
         if(!$category)
         {
             $category = new Category;
@@ -256,24 +305,19 @@ class BackOfficeController extends AbstractController
 
         $formAdminCat->handleRequest($request);
 
-        
+            if($formAdminCat->isSubmitted() && $formAdminCat->isValid())
+            {         
 
+                $manager->persist($category);
+                $manager->flush();
 
-        if($formAdminCat->isSubmitted() && $formAdminCat->isValid())
-        {
+                $titreCat = $category->getTitre();
 
-            $category->getId();          
+                $this->addFlash('success', "La catégorie '$titreCat' été ajouté avec succès !");
 
-            $manager->persist($category);
-            $manager->flush();
-
-            $this->addFlash('success', "La categories a été ajouté avec succès !");
-
-            return $this->redirectToRoute('app_admin_category');         
-        
-        }
-
-        
+                return $this->redirectToRoute('app_admin_category');         
+            
+            }        
 
         return $this->render('back_office/admin_category_form.html.twig', [
             'formAdminCat' => $formAdminCat->createView(),
@@ -281,4 +325,22 @@ class BackOfficeController extends AbstractController
 
         ]);
     }
+
+    #[Route('/admin/user', name: 'app_admin_user')]
+    public function adminUsers(EntityManagerInterface $manager, UserRepository $repoUser)
+    {
+
+        $titre = $manager->getclassMetadata(User::class)->getFieldNames();
+
+        $values = $repoUser->findAll();
+
+        //dd($values);
+
+        return $this->render('back_office/admin_user.html.twig', [
+            'titre' => $titre,
+            'values' => $values
+        ]);
+    }
+    
+
 }

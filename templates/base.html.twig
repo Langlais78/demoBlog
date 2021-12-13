@@ -53,7 +53,7 @@
                         {#  Si app.user retourne true, cela vaut dire que l'internaute est connecter, il rentre dans le IF #}
                         {% if app.user %}                    
                         
-                             <a class="link-secondary" href="{{ path('app_profil') }}" title=" Acces a votre compte">Bonjour <strong>{{ app.user.prenom }} {{ app.user.nom}}</strong></a>
+                             <a class="link-secondary" href="{{ path('app_profil') }}" title=" Acces a votre compte">Bonjour <strong>{{ app.user.prenom|capitalize }} {{ app.user.nom|upper}}</strong></a>
 
                         {% else %}
                         
@@ -96,17 +96,8 @@
                         <a class="p-2 link-secondary" href="{{ path('blog_create') }}">Nouvel article</a>
                     {% endif %}
 
-                <a class="p-2 link-secondary" href="#">US>
-                <a class="p-2 link-secondary" href="#">Technology</a>
-                <a class="p-2 link-secondary" href="#">Design</a>
-                <a class="p-2 link-secondary" href="#">Culture</a>
-                <a class="p-2 link-secondary" href="#">Business</a>
-                <a class="p-2 link-secondary" href="#">Politics</a>
-                <a class="p-2 link-secondary" href="#">Opinion</a>
-                <a class="p-2 link-secondary" href="#">Science</a>
-                <a class="p-2 link-secondary" href="#">Health</a>
-                <a class="p-2 link-secondary" href="#">Style</a>
-                <a class="p-2 link-secondary" href="#">Travel</a>
+                    {# On fait appel et on execute dans base.html la methode allcategory permettant de selectionner toutes les catégories de la BDD et d'integrerle template categorys_list.html.twig #}
+                    {{ render(controller('App\\Controller\\BlogController::allCategory')) }}
                 </nav>
             </div>
         </div>

@@ -25,6 +25,7 @@ class ArticleType extends AbstractType
                 'required' => false,
                 'attr' => [
                     'placeholder' => "Saisir le titre de l'article",
+                    'class' => 'bg-articles'
                 ],
                 'constraints' => [
                     new Length([
@@ -42,6 +43,9 @@ class ArticleType extends AbstractType
             // Ce champ provient d'une autre entité, en gros c'est la clé etrangère
             ->add('category', EntityType::class, [
                 'label' => "Choisir une catégorie",
+                'attr' => [
+                    'class' => 'bg-articles'
+                ],
                 'class' => Category::class, // On précise de quelle entité vient ce champ
                 'choice_label' => 'titre'// on definit la valeur qui apparaitra dans la liste deroulante
             ])
@@ -50,7 +54,8 @@ class ArticleType extends AbstractType
                 'required' => false,
                 'attr' => [
                     'placeholder' =>"Saisir le contenue de l'article",
-                    'rows' => 10
+                    'rows' => 10,
+                    'class' => 'bg-articles'
                 ],
                 'constraints' =>[
                 New NotBlank([
@@ -63,6 +68,9 @@ class ArticleType extends AbstractType
                 "mapped" => true, //
                 'required' => false,
                 "data_class" => null,
+                'attr' => [
+                    'class' => 'bg-articles'
+                ],
                 'constraints' => [
                     new File([
                         'maxSize' => '5M',

@@ -14,39 +14,62 @@ class CommentType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder
-            ->add('auteur', TextType::class, [
-                'label' => 'Saisir votre nom et prenom :',
-                'required' => false,
-                'attr' => [
-                    'class' => "bg-comments"
-                ],
-                'constraints' => [
-                    New NotBlank([
-                        'message' => "Merci de saisir un Nom"
-                    ])
-                ]
-            ])
-            ->add('commentaire', TextareaType::class, [
-                'label' => 'Votre commentaire :',
-                'required' => false,
-                'attr' => [
-                    'rows' => 10,
-                    'class' => "bg-comments"
-                ],
-                'constraints' => [
-                    New NotBlank([
-                        'message' => "Merci de saisir un Commentaire"
-                    ])
-                ]
-            ])
-        ;
+
+        if($options['commentFormBack'] == true)
+        {
+            $builder
+                ->add('auteur', TextType::class, [
+                    'label' => 'Saisir votre nom et prenom :',
+                    'required' => false,
+                    'attr' => [
+                        'class' => "bg-comments"
+                    ],
+                    'constraints' => [
+                        New NotBlank([
+                            'message' => "Merci de saisir un Nom"
+                        ])
+                    ]
+                ])
+                ->add('commentaire', TextareaType::class, [
+                    'label' => 'Votre commentaire :',
+                    'required' => false,
+                    'attr' => [
+                        'rows' => 10,
+                        'class' => "bg-comments"
+                    ],
+                    'constraints' => [
+                        New NotBlank([
+                            'message' => "Merci de saisir un Commentaire"
+                        ])
+                    ]
+                ]);
+        }
+        elseif($options['commentFormFront'] == true)  
+        {
+            $builder
+                ->add('commentaire', TextareaType::class, [
+                    'label' => 'Votre commentaire :',
+                    'required' => false,
+                    'attr' => [
+                        'rows' => 10,
+                        'class' => "bg-comments"
+                    ],
+                    'constraints' => [
+                        New NotBlank([
+                            'message' => "Merci de saisir un Commentaire"
+                        ])
+                    ]
+                ]);
+        }
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => Comment::class,
+            'commentFormBack' => false,
+            'commentFormFront' => false
+            
         ]);
     }
 }

@@ -1,26 +1,42 @@
 {% extends "base_admin.html.twig" %}
 
 {% block title %}
-    BlogSymfony | Catégory
+    
 {% endblock %}
 
 {% block body %}
+
     <h1 class="text-center">Catégory</h1>
 
-     <table class="table table-striped mx-2 rounded-top" id="table-category">
-        <tr class="entete-users">
-            {% for data in colonnes %}
+        {% for label, messages in app.flashes %}
 
-                {% if data != 'id' %}
-                        <th class="text-center"> {{data|capitalize}} </th>
-                {% endif %}
+            {% for message in messages %}
+
+                <div class="col-6 mx-auto text-center bg-{{ label }} p-3 text-white mb-3">
+                {{ message }}
+                </div>
                 
             {% endfor %}
-
-            <th class="text-center">N° Comm</th>
             
-            <th class="text-center">Action</th>
-        </tr>
+        {% endfor %}
+
+     <table class="table table-striped mx-2 rounded-top" id="table-category">
+        <thead>
+            <tr class="entete-users">
+                {% for data in colonnes %}
+
+                    {% if data != 'id' %}
+                            <th class="text-center"> {{data|capitalize}} </th>
+                    {% endif %}
+                    
+                {% endfor %}
+
+                <th class="text-center">N° Comm</th>
+                
+                <th class="text-center">Action</th>
+            </tr>
+        </thead>
+        <tbody>
         
             {% for data in cellules %} 
 
@@ -30,15 +46,15 @@
                     <td class="text-center"> {{ data.description}} </td>
                     <td class="text-center"> {{ data.articles|length }} </td>
 
-                    <td><div class="d-flex nowrap justify-content-center"><a href="{{ path('app_admin_category_remove', {'id': data.id}) }}" class="btn bg-danger text-white me-1" onclick="return(confirm('Etes-vous sur de vouloir supprimer cette categories : {{ data.titre }}' ))"><i class="bi bi-trash"></i></a><a href="" class="btn bg-success text-white"><i class="bi bi-pencil-square"></i></a><div></td>
+                    <td><div class="d-flex nowrap justify-content-center"><a href="{{ path('app_admin_category_remove', {'id': data.id}) }}" class="btn bg-danger text-white me-1" onclick="return(confirm('Etes-vous sur de vouloir supprimer cette categories : {{ data.titre }}' ))"><i class="bi bi-trash"></i></a><a href="{{ path('app_admin_category_update', {'id': data.id}) }}" class="btn bg-success text-white"><i class="bi bi-pencil-square"></i></a><div></td>
                 </tr>
 
                 {% endif %}
 
             {% endfor %}
-        
+        </tbody>        
     </table>
 
-    <a href="{{ path('app_admin_category_add') }}" class="btn bg-warning">Ajouter une catégorie</a>
+    <a href="{{ path('app_admin_category_add') }}" class="btn bg-warning mt-4 ms-4">Ajouter une catégorie</a>
 
 {% endblock %}

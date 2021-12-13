@@ -8,37 +8,47 @@
 
     <h1 class="text-center mt-3 mb-4">Commentaires</h1>
 
-        <table class="table table-striped mx-2">
-            <tr class="entete-comments">
-                {% for data in colonnes %}
+     {% for message in app.flashes('success') %}
+        <div class="col-6 mx-auto text-center alert alert-success">
+            {{ message }}
+        </div>        
+    {% endfor %}
 
-                    {% if data != 'id' %}
+        <table class="table table-striped mx-2" id="table-comments">
+            <thead>
+                <tr class="entete-comments">
+                    {% for data in colonnes %}
 
-                        <th class="text-center"> {{data|capitalize}} </th>
+                        {% if data != 'id' %}
 
-                    {% endif %}
-                    
-                {% endfor %}
+                            <th class="text-center"> {{data|capitalize}} </th>
 
-                <th class="text-center">Action</th>
-            </tr> 
+                        {% endif %}
+                        
+                    {% endfor %}
 
-             {% for data in cellules %} 
-
-                {% if data != 'id'  %}
-                <tr>
-        
-                <td> {{ data.commentaire|slice(0, 100)|striptags }}[...] </td>
-                <td class="text-center"> {{ data.auteur}} </td>
-                <td class="text-center"> {{ data.date|date("d/m/Y") }} {{data.date|date('H:i:s')}} </td>
-                {# <td class="text-center"> {{ data.article }} </td> #}
-                <td ><div class="d-flex nowrap"><a href="" class="btn bg-danger text-white me-1"><i class="bi bi-trash"></i></a><a href="" class="btn bg-success text-white"><i class="bi bi-pencil-square"></i></a><div></td>
-
+                    <th class="text-center">Action</th>
                 </tr>
+            </thead>
+            <tbody>
 
-                {% endif %}  
+                {% for data in cellules %} 
 
-            {% endfor %}       
+                    {% if data != 'id'  %}
+                    <tr>
+            
+                    <td> {{ data.commentaire|slice(0, 100)|striptags }}[...] </td>
+                    <td class="text-center"> {{ data.auteur}} </td>
+                    <td class="text-center"> {{ data.date|date("d/m/Y") }} {{data.date|date('H:i:s')}} </td>
+                    {# <td class="text-center"> {{ data.article }} </td> #}
+                    <td ><div class="d-flex nowrap"><a href="{{ path('app_admin_comments_remove', {'id': data.id}) }}" class="btn bg-danger text-white me-1"><i class="bi bi-trash"></i></a><a href="{{ path('app_admin_comments_update', {'id': data.id}) }}" class="btn bg-success text-white"><i class="bi bi-pencil-square"></i></a><div></td>
+
+                    </tr>
+
+                    {% endif %}  
+
+                {% endfor %}
+            </tbody>        
         </table>
 
 {% endblock %}
