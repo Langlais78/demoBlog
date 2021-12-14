@@ -29,7 +29,13 @@
                 <strong class="d-inline-block mb-2 text-primary">{{ data.category.titre }}</strong>
                 <h3 class="mb-0">{{data.titre}}</h3>
                 {# Pour la date, ce que retourne la BDD est un objet issue de la class Datetime, donc on ne peut pas convertir un objet en une chaine de caractere, pour cela nous devons utiliser la fonction date() de twig #}
-                <div class="mb-1 text-muted">Publié le {{ data.date|date("d/m/Y") }} à {{data.date|date('H:i:s')}}</div>
+                    <div class="mb-1 text-muted">
+                    Publié par
+                    {% if data.user is not empty %}                    
+                        <strong> {{ data.user.prenom|capitalize }} {{ data.user.nom|upper }} </strong>
+                    {% endif %}
+                    le {{ data.date|date("d/m/Y") }} à {{data.date|date('H:i:s')}}
+                    </div>
                 {# slice(0, 100) : filtre twig qui retourne un partie de la chaine de caractere #}
                 {# striptags() : filtre twig qui supprime les balises html #}
                 <p class="card-text mb-auto">{{ data.contenu|slice(0, 100)|striptags }}[...]</p>

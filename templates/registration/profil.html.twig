@@ -94,5 +94,35 @@
             </div>
         </div>
     </div>
+
+
+        <h3 class="text-center">Liste de vos article(s)</h3>
+
+        {% if user.article is not empty %}
+            <table class="table table-striped mx-2 rounded-top" id="table-article">
+                <thead>
+                    <tr class="entete-users bg-warning text-danger">
+                        <th class="text-center">Titre</th>
+                        <th class="text-center">Catégorie</th>
+                        <th class="text-center">Date</th>
+                        <th class="text-center">Edit</th>
+                    </tr>
+                </thead>
+                <tbody>
+                
+                    {% for data in user.article %} 
+                        <tr>             
+                            <td class=""> {{ data.titre}} </td>
+                            <td class="text-center"> {{ data.category.titre}} </td>
+                            <td class="text-center"> {{ data.date|date('d/m/Y à H:i:s')}} </td>
+                            <td><div class="d-flex nowrap justify-content-center"></a><a href="{{ path('app_admin_category_update', {'id': data.id}) }}" class="btn text-success"><i class="bi bi-pencil-square"></i></a><div></td>
+                        </tr>
+                    {% endfor %}
+
+                </tbody>        
+            </table>
+            {% else %}
+            <h3 class="text-center">Vous n'avez créé aucun article</h3>
+        {% endif %}
     
 {% endblock %}

@@ -136,7 +136,7 @@ class BlogController extends AbstractController
         }
         
         
-
+        
         // $article->setTitre("Titre a la con")
         // ->setContenu("Contenu a la con");
 
@@ -147,15 +147,26 @@ class BlogController extends AbstractController
         //handlerRequest() permet d'envoyer chaque données a $_post
         $formArticle->handleRequest($request);
 
+        
+
         // Si le formulaire a bien été validé (isSubmittted) et que l'objet entité est correctement rempli (isValid) alors on entre dans la condition IF 
         if($formArticle->isSubmitted() && $formArticle->isValid())
         {
 
+
+             
+            
             // Le seul setter que l'on appel de l'entité, c'est celui de la date puisqu'il n'y a pas de champ DATE dans le formulaire
 
             // Si l'article ne possede pas d'id, c'est une insertion, alors on entre dans la condition IF et on génère une date article
             if(!$article->getId())
                 $article->setDate(new \DateTime());
+
+                // On relie l'article publié à l'utilisateur en dbb
+                // on rlie la clé etrangère a la BDD
+                //setUser() attend en argument l'objet App\Entity\User
+            $article->setUser($this->getUser());
+                
 
             //dd($article);
 
@@ -223,19 +234,25 @@ class BlogController extends AbstractController
             ]);
         }
 
+        //dd($article);
+
         return $this->render('blog/blog_create.html.twig', [
             'formArticle' => $formArticle->createView(), // On transmet le formulaire au template afin de pouvoir l'afficher avec twig
             // createView() : retourn eun petit objet qui represente l'affichage du formulaire, on le recupere dans le template blog_create.html.twig 
             'editMode' => $article->getId(),
             'photoActuelle' => $article->getPhoto()
+
+            
         ]);
+
+        
     }
 
     # Méthode permettant
     # On defeni une route 'parametrée' {id}, ici la route permet d erecevoir l'id d'un article stockée en BDD
     #        /blog/5
     #[Route('/blog/{id}', name: 'blog_show')]
-    public function blogShow(Article $article, Request $request, EntityManagerInterface $manager): Response
+    public function blogShow(Article $article, Request $request, EntityManagerInterface $manager, ArticleType $articleB): Response
     {
         // Cette methode mise a disposition retourne un objet app\entity\article contenant tout les données de l'utilisateur authentifié sur le site
     
