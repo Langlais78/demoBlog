@@ -6,7 +6,44 @@
 
 {% block body %}
 
+     {% if app.request.query.get('op') == 'update' %}
+    
+        <h1 class="text-center my-5">Modification de {{ user.nom }} {{ user.prenom }} N° {{ user.id }}</h1>
+
+        <div class="col-3 mx-auto">
+
+            <div class="card rounded mb-4" >
+                <div class="card-body text-center shadow-sm bg-secondary rounded-t">
+                    <h6 class="card-subtitle mb-2 text-white">Id : {{ user.id }}</h6>
+                    <h6 class="card-subtitle mb-2 text-white">Nom : {{ user.nom|upper }}</h6>
+                    <h6 class="card-subtitle mb-2 text-white">Prenom : {{ user.prenom|capitalize }}</h6>                   
+                    <h6 class="card-subtitle mb-2 text-white">Email : {{ user.email }}</h6>
+                    <h6 class="card-subtitle mb-2 text-white">Adresse : {{ user.adresse }}</h6>
+                    <h6 class="card-subtitle mb-2 text-white">Code postal : {{ user.codepostal }}</h6>
+                    <h6 class="card-subtitle mb-2 text-white">Ville : {{ user.ville|upper }}</h6>
+                </div>
+                {{ form_start(formAdminUser, {'attr': {'class': 'mx-auto mt-3'}}) }}
+
+                    {{ form_row(formAdminUser.roles) }}
+
+                    <div class="text-center  my-2">
+                        <button type="submit" class="btn btn-secondary col-6">Enregistrer</button>
+                    </div>
+                {{ form_end(formAdminUser) }}
+            </div>
+
+          </div> 
+
+    {% endif %}
+
+
     <h1 class="text-center my-2">Liste des Utilisateurs</h1>
+
+        {% for message in app.flashes('success') %}
+            <div class="col-6 mx-auto text-center alert alert-success">
+                {{ message }}
+            </div>        
+        {% endfor %}
 
     <table class="table table-striped mx-2 rounded-top" id="table-user">
     <thead>
@@ -28,7 +65,7 @@
         </thead>
         <tbody>
         
-            {% for data in values %} 
+            {% for data in users %} 
 
                 {% if data != 'id' %}
                 <tr>
@@ -44,7 +81,7 @@
                 <td class="text-center"> {{ data.adresse}} </td>
                 <td class="text-center"> {{ data.ville|capitalize}} </td>
                 <td class="text-center"> {{ data.codepostal}} </td>
-                <td><div class="d-flex nowrap justify-content-center"><a href="" class="btn bg-danger text-white me-1"><i class="bi bi-trash"></i></a><a href="" class="btn bg-success text-white"><i class="bi bi-pencil-square"></i></a><div></td>
+                <td><div class="d-flex nowrap justify-content-center"><a href="{{ path('app_admin_user_remove', {'id': data.id}) }}?op=remove" class="btn bg-danger text-white me-1"  onclick="return(confirm('Etes-vous sur de vouloir supprimer cet utilisateur : {{ data.nom }} {{ data.prenom }}' ))"><i class="bi bi-trash"></i></a><a href="{{ path('app_admin_user_update', {'id': data.id}) }}?op=update" class="btn bg-success text-white"><i class="bi bi-pencil-square"></i></a><div></td>
 
                 </tr>
 
@@ -53,5 +90,7 @@
             {% endfor %}
         </tbody>
     </table>
+
+      
     
 {% endblock %}

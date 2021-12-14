@@ -10,6 +10,7 @@ use App\Form\ArticleType;
 use App\Form\CommentType;
 use App\Form\CategoryFormType;
 use App\Controller\BlogController;
+use App\Form\RegistrationFormType;
 use App\Repository\UserRepository;
 use App\Repository\ArticleRepository;
 use App\Repository\CommentRepository;
@@ -326,21 +327,142 @@ class BackOfficeController extends AbstractController
         ]);
     }
 
+    // #[Route('/admin/user', name: 'app_admin_user')]
+    // public function adminUsers(EntityManagerInterface $manager, UserRepository $repoUser)
+    // {
+
+    //     $titre = $manager->getclassMetadata(User::class)->getFieldNames();
+
+    //     $values = $repoUser->findAll();
+
+    //     //dd($values);
+
+    //     return $this->render('back_office/admin_user.html.twig', [
+    //         'titre' => $titre,
+    //         'values' => $values
+    //     ]);
+    // }
+    
+    // #[Route('/admin/user/{id}/remove', name: 'app_admin_user_remove')]
+    // public function adminUserRemove(User $userRemove , EntityManagerInterface $manager)
+    // {
+
+    //     $utilisateur = $userRemove->getId();
+
+    //     if($userRemove)
+    //     {
+
+    //     $manager->remove($userRemove);
+    //     $manager->flush();
+
+    //     $this->addFlash('success', "L'utilisateur' '$utilisateur' été ajouté avec succès !");
+
+    //     return $this->redirectToRoute('app_admin_user');
+
+    //     }
+
+    //     return $this->render('back_office/admin_user.html.twig');
+
+    //     // return $this->render('back_office/app_admin_user_form.html.twig');
+    // }
+
+
+    // #[Route('/admin/user/{id}/edit', name: 'app_admin_user_update')]
+    // public function adminUserUpdate(User $user = null, Request $request, EntityManagerInterface $manager): Response
+    // {
+    //     $formAdminUser = $this->createForm(RegistrationFormType::class, $user, [
+    //         'userBack' => true
+    //     ]);
+
+    //     $formAdminUser->handleRequest($request);
+
+    //             if($formAdminUser->isSubmitted() && $formAdminUser->isValid())
+    //             {   
+    
+    //                 $manager->persist($user);
+    //                 $manager->flush();
+    
+    //                 $idUser = $user->getId();
+    
+    //                 $this->addFlash('success', "L'utilisateur '$idUser' été modifié avec succès !");
+    
+    //                 return $this->redirectToRoute('app_admin_user');         
+                
+    //             }            
+
+    //     return $this->render('back_office/admin_user.html.twig', [
+    //         'formAdminUser' => $formAdminUser->createView(),
+    //         'editmode' => $user->getId(),
+    //         'users' => $user
+    //         ]);
+    // }
+
+
     #[Route('/admin/user', name: 'app_admin_user')]
-    public function adminUsers(EntityManagerInterface $manager, UserRepository $repoUser)
+    #[Route('/admin/user/{id}/update', name: 'app_admin_user_update')]
+    #[Route('/admin/user/{id}/remove', name: 'app_admin_user_remove')]
+    public function adminUser(EntityManagerInterface $manager, UserRepository $repoUser, User $user = null, Request $request): Response
     {
+        // dd($user);
+        // dd($request->query);
 
-        $titre = $manager->getclassMetadata(User::class)->getFieldNames();
+        $titre = $manager->getClassMetaData(User::class)->getFieldNames();
 
-        $values = $repoUser->findAll();
+        $users = $repoUser->findAll();
 
-        //dd($values);
+        // Si $user retourne true, cela veut que $user les informations d'1 user stocké en BDD
+        if($user)
+        {
+            // Si l'indice 'op' est définit dans l'URL et qu'il a pour valeur 'update', alors on entre dans la condition et on execute une requete 'update'
+            if($request->query->get('op') == 'update')
+            {
+                // dd('update');
+                $formAdminUser = $this->createForm(RegistrationFormType::class, $user, [
+                    'userBack' => true
+                ]);
+
+                $formAdminUser->handleRequest($request);
+
+                if($formAdminUser->isSubmitted() && $formAdminUser->isValid())
+                {
+                    $infos = $user->getPrenom() . " " . $user->getNom();
+
+                    $manager->persist($user);
+                    $manager->flush();
+
+                    $this->addFlash('success', "Le rôle de l'utilisateur $infos a été modifié avec succès.");
+
+                    return $this->redirectToRoute('app_admin_user');
+                }
+            }
+            else // Sinon, aucun paramètres dans l'URL, alors on execute une requete de suppression
+            {
+
+                $infos = $user->getPrenom() . " " . $user->getNom();
+
+                $manager->remove($user);
+                $manager->flush();
+
+                $this->addFlash('success', "Le rôle de l'utilisateur $infos a été supprimé avec succès.");
+
+                return $this->redirectToRoute('app_admin_user');
+            }
+        }
+       
 
         return $this->render('back_office/admin_user.html.twig', [
             'titre' => $titre,
-            'values' => $values
+            'users' => $users,
+            // Si l'indice dans l'URL est 'op=update' alors on execute createView() sur l'objet formUtiUpdate pour générer le formualaire, sinon on stock une chaine de caractère vide
+            'formAdminUser' => ($request->query->get('op') == 'update') ? $formAdminUser->createView() : '',
+            'user' => $user
         ]);
-    }
-    
+    } 
 
+     /*
+        Exo : Le but est de relier les utilisateurs aux articles, lorsque l'internaute poste un article, il faut une relation entre Article et User
+        Créer une nouvelle propriété dans l'entité user 'article' et fait une relation OneToMany, cette propriété peut être null
+        Lorsque l'internaute poste un nouvel article, faites en sorte de renseigner la clé étrangère 'user_id' afin que l'article soit relié à l'utilisateur connecté
+        Dans la page profil de l'utilisateur, afficher dans une liste tout les articles posté par l'internaute (titre article (lien qui redirige vers l'article), date/heure et un lien pour la modification)
+    */
 }

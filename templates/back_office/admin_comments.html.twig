@@ -8,7 +8,7 @@
 
     <h1 class="text-center mt-3 mb-4">Commentaires</h1>
 
-     {% for message in app.flashes('success') %}
+    {% for message in app.flashes('success') %}
         <div class="col-6 mx-auto text-center alert alert-success">
             {{ message }}
         </div>        
@@ -37,11 +37,11 @@
                     {% if data != 'id'  %}
                     <tr>
             
-                    <td> {{ data.commentaire|slice(0, 100)|striptags }}[...] </td>
+                    <td><a href="{{ path('blog_show', {'id': data.id}) }}" class="link-secondary">{{ data.commentaire|slice(0, 100)|striptags }}[...]</a></td>
                     <td class="text-center"> {{ data.auteur}} </td>
                     <td class="text-center"> {{ data.date|date("d/m/Y") }} {{data.date|date('H:i:s')}} </td>
                     {# <td class="text-center"> {{ data.article }} </td> #}
-                    <td ><div class="d-flex nowrap"><a href="{{ path('app_admin_comments_remove', {'id': data.id}) }}" class="btn bg-danger text-white me-1"><i class="bi bi-trash"></i></a><a href="{{ path('app_admin_comments_update', {'id': data.id}) }}" class="btn bg-success text-white"><i class="bi bi-pencil-square"></i></a><div></td>
+                    <td ><div class="d-flex nowrap"><a href="{{ path('app_admin_comments_remove', {'id': data.id}) }}" class="btn bg-danger text-white me-1" onclick="return(confirm('Etes-vous sur de vouloir supprimer ce commentaire : {{ data.id }} ' ))"><i class="bi bi-trash"></i></a><a href="{{ path('app_admin_comments_update', {'id': data.id}) }}" class="btn bg-success text-white"><i class="bi bi-pencil-square"></i></a><div></td>
 
                     </tr>
 

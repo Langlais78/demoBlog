@@ -11,8 +11,10 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
 class RegistrationFormType extends AbstractType
 {
@@ -25,7 +27,7 @@ class RegistrationFormType extends AbstractType
                     'required' => false,
                     'constraints' => [
                         new NotBlank([
-                            'message' => "veuillez renseigner votre email"
+                            'message' => "Veuillez renseigner votre email"
                         ])
                     ]
                 ])
@@ -33,7 +35,7 @@ class RegistrationFormType extends AbstractType
                     'required' => false,
                     'constraints' => [
                         new NotBlank([
-                            'message' => "veuillez renseigner votre email"
+                            'message' => "Veuillez renseigner votre email"
                         ])
                     ]
                 ])
@@ -41,7 +43,7 @@ class RegistrationFormType extends AbstractType
                     'required' => false,
                     'constraints' => [
                         new NotBlank([
-                            'message' => "veuillez renseigner votre email"
+                            'message' => "Veuillez renseigner votre email"
                         ])
                     ]
                 ])
@@ -49,7 +51,7 @@ class RegistrationFormType extends AbstractType
                     'required' => false,
                     'constraints' => [
                         new NotBlank([
-                            'message' => "veuillez renseigner votre email"
+                            'message' => "Veuillez renseigner votre email"
                         ])
                     ]
                 ])
@@ -57,7 +59,7 @@ class RegistrationFormType extends AbstractType
                     'required' => false,
                     'constraints' => [
                         new NotBlank([
-                            'message' => "veuillez renseigner votre email"
+                            'message' => "Veuillez renseigner votre email"
                         ])
                     ]
                 ])
@@ -65,7 +67,7 @@ class RegistrationFormType extends AbstractType
                     'required' => false,
                     'constraints' => [
                         new NotBlank([
-                            'message' => "veuillez renseigner votre email"
+                            'message' => "Veuillez renseigner votre email"
                         ])
                     ]
                 ])
@@ -103,7 +105,7 @@ class RegistrationFormType extends AbstractType
                 'required' => false,
                 'constraints' => [
                     new NotBlank([
-                        'message' => "veuillez renseigner votre email"
+                        'message' => "Veuillez renseigner votre email"
                     ])
                 ]
             ])
@@ -111,7 +113,7 @@ class RegistrationFormType extends AbstractType
                 'required' => false,
                 'constraints' => [
                     new NotBlank([
-                        'message' => "veuillez renseigner votre email"
+                        'message' => "Veuillez renseigner votre email"
                     ])
                 ]
             ])
@@ -119,7 +121,7 @@ class RegistrationFormType extends AbstractType
                 'required' => false,
                 'constraints' => [
                     new NotBlank([
-                        'message' => "veuillez renseigner votre email"
+                        'message' => "Veuillez renseigner votre email"
                     ])
                 ]
             ])
@@ -127,7 +129,7 @@ class RegistrationFormType extends AbstractType
                 'required' => false,
                 'constraints' => [
                     new NotBlank([
-                        'message' => "veuillez renseigner votre email"
+                        'message' => "Veuillez renseigner votre email"
                     ])
                 ]
             ])
@@ -135,7 +137,7 @@ class RegistrationFormType extends AbstractType
                 'required' => false,
                 'constraints' => [
                     new NotBlank([
-                        'message' => "veuillez renseigner votre email"
+                        'message' => "Veuillez renseigner votre email"
                     ])
                 ]
             ])
@@ -143,7 +145,7 @@ class RegistrationFormType extends AbstractType
                 'required' => false,
                 'constraints' => [
                     new NotBlank([
-                        'message' => "veuillez renseigner votre email"
+                        'message' => "Veuillez renseigner votre email"
                     ])
                 ]
             ]);
@@ -151,62 +153,19 @@ class RegistrationFormType extends AbstractType
         elseif($options['userBack'] == true)
         {
             $builder
-            ->add('email', TextType::class, [
-                'required' => false,
-                'constraints' => [
-                    new NotBlank([
-                        'message' => "veuillez renseigner votre email"
-                    ])
-                ]
-            ])
-            ->add('roles', TextType::class, [
-                'required' => false,
-                'constraints' => [
-                    new NotBlank([
-                        'message' => "veuillez renseigner un statut"
-                    ])
-                ]
-            ])
-            ->add('prenom', TextType::class, [
-                'required' => false,
-                'constraints' => [
-                    new NotBlank([
-                        'message' => "veuillez renseigner votre email"
-                    ])
-                ]
-            ])
-            ->add('nom', TextType::class, [
-                'required' => false,
-                'constraints' => [
-                    new NotBlank([
-                        'message' => "veuillez renseigner votre email"
-                    ])
-                ]
-            ])
-            ->add('adresse', TextType::class, [
-                'required' => false,
-                'constraints' => [
-                    new NotBlank([
-                        'message' => "veuillez renseigner votre email"
-                    ])
-                ]
-            ])
-            ->add('ville', TextType::class, [
-                'required' => false,
-                'constraints' => [
-                    new NotBlank([
-                        'message' => "veuillez renseigner votre email"
-                    ])
-                ]
-            ])
-            ->add('codePostal', TextType::class, [
-                'required' => false,
-                'constraints' => [
-                    new NotBlank([
-                        'message' => "veuillez renseigner votre email"
-                    ])
-                ]
+            ->add('roles', ChoiceType::class, [
+                    'choices' =>[
+                        'Utilisateur' => '',
+                        'Administrateur' => 'ROLE_ADMIN'
+                        ],
+                        'expanded' => false,
+                        'multiple' => true,
+                        'label' => "Definir le role de l'utilisateur : ",
+                        'attr' => [
+                            'class' => 'select-admin'
+                        ],
             ]);
+           
         }
     }
 
@@ -215,7 +174,8 @@ class RegistrationFormType extends AbstractType
         $resolver->setDefaults([
             'data_class' => User::class,
             'userRegistration' => false,
-            'userUpdate' => false
+            'userUpdate' => false,
+            'userBack' => false
         ]);
     }
 }

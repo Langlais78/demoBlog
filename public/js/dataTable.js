@@ -41,3 +41,14 @@ $(document).ready(function() {
         ]
     });
 });
+
+$(document).ready(function() {
+    $('#table-article').DataTable({
+        language: {
+            url: '/js/dataTables.french.json'
+        },
+        "aoColumnDefs": [
+            { 'bSortable': false, 'aTargets': [ 3 ] }
+        ]
+    });
+});

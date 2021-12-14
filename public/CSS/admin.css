@@ -5,6 +5,11 @@
     text-decoration: none;
 }
 
+.select-admin{
+    height: 60px;
+    width: 200px;
+}
+
 .bg-comments{
     background-color: rgba(252, 214, 178, 0.363);
 }
